@@ -1,4 +1,4 @@
-# nuxt-ssr-ssg
+# nuxt-microcms
 
 ## Build Setup
 

@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-ssr-ssg",
+  "name": "nuxt-microcms",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,15 @@
   "lint-staged": {
     "*.{js,vue}": "eslint"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
+    "@nuxt/http": "^0.6.0",
     "@nuxt/typescript-runtime": "^2.0.0",
+    "@nuxtjs/composition-api": "^0.13.5",
     "bootstrap": "^4.5.2",
     "bootstrap-vue": "^2.16.0",
     "core-js": "^3.6.5",
@@ -23,6 +30,7 @@
   "devDependencies": {
     "@nuxt/types": "^2.14.5",
     "@nuxt/typescript-build": "^2.0.3",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",

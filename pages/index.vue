@@ -1,65 +1,74 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">nuxt-ssr-ssg</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <section v-if="contents" class="top">
+    <b-container>
+      <h2>{{ contents.name }}</h2>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <div class="lead" v-html="contents.message" />
+        </div>
       </div>
-    </div>
-  </div>
+
+      <div class="news">
+        <h2>お知らせ</h2>
+        <b-row>
+          <b-col
+            v-for="item in contents.news"
+            :key="item.id"
+            sm="auto"
+            xs="auto"
+          >
+            <b-card
+              :title="item.title"
+              :img-src="item.image.url"
+              :img-alt="item.title"
+              img-top
+              tag="article"
+              style="max-width: 20rem"
+              class="mb-2"
+            >
+              <div v-html="item.content" />
+              <b-button href="#" variant="primary">詳細</b-button>
+            </b-card>
+          </b-col>
+        </b-row>
+      </div>
+    </b-container>
+  </section>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent, useContext, useAsync } from '@nuxtjs/composition-api'
 
-export default Vue.extend({})
+type Image = {
+  url: string
+}
+
+interface News {
+  id: string
+  title: string
+  image: Image
+  content: string
+}
+
+interface TopContents {
+  name: string
+  message: string
+  news: News[]
+}
+
+export default defineComponent({
+  setup() {
+    const { $microcms } = useContext()
+    const contents = useAsync<TopContents>(() => $microcms.$get('/pages-top'))
+    return {
+      contents,
+    }
+  },
+})
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+<style scoped>
+.top {
+  margin-top: 30px;
 }
 </style>
